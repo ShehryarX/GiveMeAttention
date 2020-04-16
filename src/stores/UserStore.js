@@ -8,19 +8,19 @@ class UserStore {
   @action
   createNewUser(email, password) {
     firebase
-    .auth()
-    .createUserWithEmailAndPassword(email, password)
-    .then(() =>  this.isUserSignedIn = true;)
-    .catch(error => this.setState({ errorMessage: error.message }))
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(() => (this.isUserSignedIn = true))
+      .catch((error) => this.setState({ errorMessage: error.message }));
   }
-  
+
   @action
   signInUser(email, password) {
     firebase
-    .auth()
-    .signInWithEmailAndPassword(email, password)
-    .then(() =>  this.isUserSignedIn = true;)
-    .catch(error => this.setState({ errorMessage: error.message }))
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => (this.isUserSignedIn = true))
+      .catch((error) => this.setState({ errorMessage: error.message }));
   }
 
   @action
