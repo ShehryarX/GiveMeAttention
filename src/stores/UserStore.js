@@ -6,8 +6,21 @@ class UserStore {
   isUserSignedIn = false;
 
   @action
-  signInUser(username, password) {
-    this.isUserSignedIn = true;
+  createNewUser(email, password) {
+    firebase
+    .auth()
+    .createUserWithEmailAndPassword(email, password)
+    .then(() =>  this.isUserSignedIn = true;)
+    .catch(error => this.setState({ errorMessage: error.message }))
+  }
+  
+  @action
+  signInUser(email, password) {
+    firebase
+    .auth()
+    .signInWithEmailAndPassword(email, password)
+    .then(() =>  this.isUserSignedIn = true;)
+    .catch(error => this.setState({ errorMessage: error.message }))
   }
 
   @action
