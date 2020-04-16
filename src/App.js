@@ -1,12 +1,17 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { observer } from "mobx-react";
+import { LoginPage } from "./screens/login/LoginPage";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
-  );
+@observer
+class App extends React.Component {
+  render() {
+    return (
+      <View style={styles.container}>
+        <LoginPage />
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -17,3 +22,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
+
+export default App;

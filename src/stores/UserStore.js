@@ -5,13 +5,22 @@ class UserStore {
   @observable
   isUserSignedIn = false;
 
+  @observable
+  hasError = false;
+
+  @observable
+  errorMessage = "";
+
   @action
   createNewUser(email, password) {
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(() => (this.isUserSignedIn = true))
-      .catch((error) => this.setState({ errorMessage: error.message }));
+      .catch((error) => {
+        hasError = true;
+        errorMessage = "Error creating new user";
+      });
   }
 
   @action
@@ -20,7 +29,10 @@ class UserStore {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => (this.isUserSignedIn = true))
-      .catch((error) => this.setState({ errorMessage: error.message }));
+      .catch((error) => {
+        hasError = true;
+        errorMessage = "Incorrect password";
+      });
   }
 
   @action
