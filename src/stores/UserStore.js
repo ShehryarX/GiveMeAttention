@@ -2,23 +2,18 @@ import { decorate, observable, action } from "mobx";
 import * as firebase from "firebase";
 
 class UserStore {
+  @observable
   isUserSignedIn = false;
 
-  // @return `true` if user signed in successfully
-  // @return `false` if signed in failed
+  @action
   signInUser(username, password) {
     this.isUserSignedIn = true;
   }
 
+  @action
   signOut() {
     this.isUserSignedIn = false;
   }
 }
-
-decorate(UserStore, {
-  isUserSignedIn: observable,
-  signInUser: action,
-  signOut: action,
-});
 
 export default new UserStore();
