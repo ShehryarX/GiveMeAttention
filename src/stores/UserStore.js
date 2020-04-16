@@ -12,12 +12,13 @@ class UserStore {
   errorMessage = "";
 
   @action
-  createNewUser(email, password) {
+  createNewUser(email, username, password) {
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(() => (this.isUserSignedIn = true))
       .catch((error) => {
+        console.log(error);
         hasError = true;
         errorMessage = "Error creating new user";
       });

@@ -1,14 +1,19 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { observer } from "mobx-react";
-import { LoginPage } from "./screens/login/LoginPage";
+import { RegisterPage } from "./screens/register/RegisterPage";
+import UserStore from "./stores/UserStore";
+import "./config/FirebaseConfig";
+import { HomePage } from "./screens/home/HomePage";
 
 @observer
 class App extends React.Component {
   render() {
+    const { isUserSignedIn } = UserStore;
+
     return (
       <View style={styles.container}>
-        <LoginPage />
+        {isUserSignedIn ? <HomePage /> : <RegisterPage />}
       </View>
     );
   }
