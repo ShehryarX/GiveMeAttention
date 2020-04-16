@@ -16,7 +16,9 @@ class UserStore {
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .then(() => (this.isUserSignedIn = true))
+      .then(() => {
+        this.isUserSignedIn = true;
+      })
       .catch((error) => {
         console.log(error);
         hasError = true;
