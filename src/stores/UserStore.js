@@ -17,6 +17,24 @@ class UserStore {
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(() => {
+        // Create profile in the DB
+        firebase
+          .database()
+          .ref("users/" + username)
+          .set(
+            JSON.parse(
+              JSON.stringify({
+                username: username,
+                email: email,
+                friends: {
+                  username: "0",
+                },
+                friendRequests: {
+                  username: "0",
+                },
+              })
+            )
+          );
         this.isUserSignedIn = true;
       })
       .catch((error) => {

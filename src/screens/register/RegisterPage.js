@@ -5,10 +5,12 @@ import { FormTextInput } from "../../common/FormTextInput";
 import { COLOURS } from "../../config/colors";
 import { observer } from "mobx-react";
 import { RegisterStore } from "./state";
+import { HomeStore } from "../home/state";
 
 @observer
 export class RegisterPage extends React.Component {
   state = new RegisterStore();
+  otherstate = new HomeStore();
 
   render() {
     return (
@@ -36,6 +38,17 @@ export class RegisterPage extends React.Component {
           <Button
             label={"Register"}
             onPress={this.state.handleCreateUserAccount}
+          />
+
+          <FormTextInput
+            value={this.otherstate.friendusername}
+            returnKeyType="done"
+            onChangeText={this.otherstate.handlefriendusernameChange}
+            placeholder={"Friends name"}
+          />
+          <Button
+            label={"Add Friend"}
+            onPress={this.otherstate.AcceptFriendRequest}
           />
         </View>
       </View>
