@@ -23,6 +23,14 @@ class ProfileControllerImpl {
     }
   }
 
+  async assertUsernameDoesNotExist(username) {
+    const doesUserExist = await this.doesProfileWithUsernameExist(username);
+
+    if (doesUserExist) {
+      throw new Error("Unable to find username");
+    }
+  }
+
   @action
   async sendFriendRequestToUsername(friendUsername) {
     await this.assertUsernameExists(friendUsername);

@@ -1,5 +1,6 @@
 import { observable, action } from "mobx";
 import * as firebase from "firebase";
+import { ProfileController } from "../controllers/ProfileController";
 
 class UserStoreImpl {
   @observable
@@ -24,13 +25,15 @@ class UserStoreImpl {
   friendRequestsList = [];
 
   @action
-  createNewUser(email, username, password) {
+  async createNewUser(email, username, password) {
     email = email.toLowerCase();
 
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(() => {
+        await ProfileController.assertUsernameDoesNotExist(email);
+
         firebase
           .database()
           .ref(`users/${username}`)
