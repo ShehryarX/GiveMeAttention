@@ -97,14 +97,3 @@ class UserStoreImpl {
 }
 
 export const UserStore = new UserStoreImpl();
-
-(async function () {
-  UserStore.username = "rishabh";
-
-  // const doesUserExist = await ProfileController.doesProfileWithUsernameExist(
-  //   "ritika"
-  // );
-  // await ProfileController.sendFriendRequestToUsername("ritika");
-  // await ProfileController.addFriend("ritika");
-  // await ProfileController.removeFriend("ritika");
-})();
