@@ -1,9 +1,9 @@
 {
-  "name": "rn-mobile",
-  "displayName": "rn-mobile",
+  "name": "temp",
+  "displayName": "temp",
   "expo": {
-    "name": "rn-mobile",
-    "slug": "rn-mobile",
+    "name": "temp",
+    "slug": "temp",
     "version": "1.0.0",
     "platforms": [
       "ios",
