@@ -1,5 +1,6 @@
 import { observable, action } from "mobx";
 import * as firebase from "firebase";
+import { ProfileController } from "./ProfileController";
 
 class UserStoreImpl {
   @observable
@@ -17,6 +18,12 @@ class UserStoreImpl {
   @observable
   uid = "";
 
+  @observable
+  friendsList = [];
+
+  @observable
+  friendRequestsList = [];
+
   @action
   createNewUser(email, username, password) {
     email = email.toLowerCase();
@@ -27,7 +34,7 @@ class UserStoreImpl {
       .then(() => {
         firebase
           .database()
-          .ref("users/" + username)
+          .ref(`users/${username}`)
           .set({
             username,
             email,
@@ -41,6 +48,7 @@ class UserStoreImpl {
         this.username = username;
         this.uid = firebase.auth().currentUser.uid;
         this.isUserSignedIn = true;
+        this.friendsList = this.friendRequestsList = [];
       })
       .catch(() => {
         this.hasError = true;
@@ -72,6 +80,9 @@ class UserStoreImpl {
             this.isUserSignedIn = true;
             this.username =
               databaseVal[Object.keys(databaseVal)[0]]["username"];
+            this.friends = databaseVal[this.username]["friends"];
+            this.friendRequestsList =
+              databaseVal[this.username]["friendRequests"];
           });
       })
       .catch(() => {
@@ -87,3 +98,14 @@ class UserStoreImpl {
 }
 
 export const UserStore = new UserStoreImpl();
+
+(async function () {
+  UserStore.username = "rishabh";
+
+  // const doesUserExist = await ProfileController.doesProfileWithUsernameExist(
+  //   "ritika"
+  // );
+  // await ProfileController.sendFriendRequestToUsername("ritika");
+  // await ProfileController.addFriend("ritika");
+  // await ProfileController.removeFriend("ritika");
+})();
