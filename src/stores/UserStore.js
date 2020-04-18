@@ -1,6 +1,5 @@
 import { observable, action } from "mobx";
 import * as firebase from "firebase";
-import { ProfileController } from "./ProfileController";
 
 class UserStoreImpl {
   @observable

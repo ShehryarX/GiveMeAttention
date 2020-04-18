@@ -1,6 +1,6 @@
 import { action } from "mobx";
 import * as firebase from "firebase";
-import { UserStore } from "./UserStore";
+import { UserStore } from "../stores/UserStore";
 
 class ProfileControllerImpl {
   async doesProfileWithUsernameExist(username) {

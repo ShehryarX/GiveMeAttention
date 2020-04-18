@@ -1,5 +1,5 @@
 import { observable, action } from "mobx";
-import { ProfileController } from "../../stores/ProfileController";
+import { ProfileController } from "../../controllers/ProfileController";
 
 export class HomeStore {
   @observable
