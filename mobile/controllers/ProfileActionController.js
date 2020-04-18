@@ -17,13 +17,16 @@ class ProfileActionController {
     }
 
     if (
-      previousPings.length <= 6 ||
-      moment.duration(previousPings[previousPings.length - 1 - 6]).asMinutes() >
-        30
+      previousPings.length <= 5 ||
+      moment.duration(previousPings[previousPings.length - 1]).asMinutes() > 30
     ) {
       // now we must ping the user!
       // Firebase.pingUsername(username);
       previousPings.append(moment().toDate());
+
+      if (previousPings.length > 6) {
+        previousPings.shift();
+      }
 
       const newPings = await AsyncStorage.setItem(storageKey, previousPings);
       Logger.log(
