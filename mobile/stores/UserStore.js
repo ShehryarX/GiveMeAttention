@@ -1,6 +1,7 @@
 import { observable, action } from "mobx";
 import * as firebase from "firebase";
 import { ProfileController } from "../controllers/ProfileController";
+import { Logger } from "../logging/Logger";
 
 class UserStoreImpl {
   @observable
@@ -52,10 +53,14 @@ class UserStoreImpl {
         this.isUserSignedIn = true;
         this.friendsList = this.friendRequestsList = [];
       })
-      .catch(() => {
-        this.hasError = true;
-        this.errorMessage = "Error creating new user";
-      });
+      .catch(() => this.setError(true, 'Error creating new user'));
+  }
+
+  @action
+  setError(hasError, errorMessage) {
+    Logger.log(`Error status changed to ${this.hasError} with messsge ${this.errorMessage}.`);
+    this.hasError = hasError;
+    this.errorMessage = errorMessage;
   }
 
   @action
@@ -87,10 +92,7 @@ class UserStoreImpl {
               databaseVal[this.username]["friendRequests"];
           });
       })
-      .catch(() => {
-        this.hasError = true;
-        this.errorMessage = "Incorrect password";
-      });
+      .catch(() => this.setError(true, 'Incorrect password'));
   }
 
   @action

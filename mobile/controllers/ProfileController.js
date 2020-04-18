@@ -1,6 +1,7 @@
 import { action } from "mobx";
 import * as firebase from "firebase";
 import { UserStore } from "../stores/UserStore";
+import { Logger } from "../logging/Logger";
 
 class ProfileControllerImpl {
   async doesProfileWithUsernameExist(username) {
@@ -19,6 +20,7 @@ class ProfileControllerImpl {
     const doesUserExist = await this.doesProfileWithUsernameExist(username);
 
     if (!doesUserExist) {
+      Logger.error(`User ${username} does not exist.`);
       throw new Error("Unable to find username");
     }
   }
@@ -27,6 +29,7 @@ class ProfileControllerImpl {
     const doesUserExist = await this.doesProfileWithUsernameExist(username);
 
     if (doesUserExist) {
+      Logger.error(`User ${username} does exist.`);
       throw new Error("Unable to find username");
     }
   }
