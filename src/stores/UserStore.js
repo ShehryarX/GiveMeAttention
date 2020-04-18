@@ -1,7 +1,7 @@
-import { decorate, observable, action } from "mobx";
+import { observable, action } from "mobx";
 import * as firebase from "firebase";
 
-class UserStore {
+class UserStoreImpl {
   @observable
   isUserSignedIn = false;
 
@@ -9,39 +9,49 @@ class UserStore {
   hasError = false;
 
   @observable
-  errorMessage = "";
+  errorMessage = null;
+
+  @observable
+  username = null;
+
+  @observable
+  uid = "";
 
   @action
   createNewUser(email, username, password) {
+    email = email.toLowerCase();
+
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(() => {
-        // Create profile in the DB
         firebase
           .database()
           .ref("users/" + username)
-          .set(
-            JSON.parse(
-              JSON.stringify({
-                username: username,
-                email: email,
-                friends: {
-                  username: "0",
-                },
-                friendRequests: {
-                  username: "0",
-                },
-              })
-            )
-          );
+          .set({
+            username,
+            email,
+            friends: {
+              username: "0",
+            },
+            friendRequests: {
+              username: "0",
+            },
+          });
+        this.username = username;
+        this.uid = firebase.auth().currentUser.uid;
         this.isUserSignedIn = true;
       })
-      .catch((error) => {
-        console.log(error);
-        hasError = true;
-        errorMessage = "Error creating new user";
+      .catch(() => {
+        this.hasError = true;
+        this.errorMessage = "Error creating new user";
       });
+  }
+
+  @action
+  dismissError() {
+    this.hasError = false;
+    this.error = null;
   }
 
   @action
@@ -49,10 +59,24 @@ class UserStore {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(() => (this.isUserSignedIn = true))
-      .catch((error) => {
-        hasError = true;
-        errorMessage = "Incorrect password";
+      .then(() => {
+        firebase
+          .database()
+          .ref("/")
+          .child("users")
+          .orderByChild("email")
+          .equalTo(this.email.toLowerCase())
+          .on("value", (snapshot) => {
+            const databaseVal = snapshot.val();
+            this.uid = firebase.auth().currentUser.uid;
+            this.isUserSignedIn = true;
+            this.username =
+              databaseVal[Object.keys(databaseVal)[0]]["username"];
+          });
+      })
+      .catch(() => {
+        this.hasError = true;
+        this.errorMessage = "Incorrect password";
       });
   }
 
@@ -62,4 +86,4 @@ class UserStore {
   }
 }
 
-export default new UserStore();
+export const UserStore = new UserStoreImpl();

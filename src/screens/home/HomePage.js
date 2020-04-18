@@ -3,7 +3,7 @@ import { Text } from "react-native";
 import { Button } from "../../common/Button";
 import { FormTextInput } from "../../common/FormTextInput";
 import { HomeStore } from "./state";
-import UserStore from "../../stores/UserStore";
+import { UserStore } from "../../stores/UserStore";
 import { observer } from "mobx-react";
 
 @observer
