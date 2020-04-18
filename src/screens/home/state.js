@@ -12,7 +12,7 @@ export class HomeStore {
 
   @action
   handleAddFriend = () => {
-    ProfileStore.addFriend("rishabh", "rhea");
+    ProfileStore.sendFriendRequest("rishabh", this.friendusername);
   };
 
   @action
@@ -22,6 +22,6 @@ export class HomeStore {
 
   @action
   AcceptFriendRequest = () => {
-    ProfileStore.acceptFriendRequest("rishabh", "rhea");
+    ProfileStore.acceptFriendRequest("rishabh", this.friendusername);
   };
 }

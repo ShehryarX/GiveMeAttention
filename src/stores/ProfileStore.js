@@ -18,7 +18,7 @@ class ProfileStore {
   }
 
   @action
-  addFriend(CurrentUsername, FriendUsername) {
+  sendFriendRequest(CurrentUsername, FriendUsername) {
     if (this.findUser(FriendUsername) == true) {
       throw new Error("Unable to find username");
     }
@@ -63,25 +63,46 @@ class ProfileStore {
     return friendRequestsList;
   }
 
+  addFriend(CurrentUsername, FriendUsername) {
+    if (this.findUser(FriendUsername) == true) {
+      throw new Error("Unable to find username");
+    }
+    console.log("Adding " + FriendUsername + " to " + CurrentUsername);
+    firebase
+      .database()
+      .ref("users/" + CurrentUsername + "/friends/")
+      .push({
+        username: FriendUsername,
+      });
+  }
+
   @action
   acceptFriendRequest(CurrentUsername, FriendUsername) {
-    var friendRequestsList = [];
     firebase
       .database()
       .ref("users/" + CurrentUsername + "/friendRequests")
       .on("child_added", function (snapshot) {
         let key = snapshot.key;
-        snapshot.forEach(function (data) {
-          console.log("Data -- " + data.val() + " friend " + FriendUsername);
-          if (data.val() === FriendUsername) {
-            console.log("Removing");
-            firebase.database
-              .child("users/" + CurrentUsername + "/friedRequests/" + key)
-              .remove();
-            console.log("Removed");
-          }
-          friendRequestsList.push(data.val);
-        });
+        if (snapshot.val()["username"] == FriendUsername) {
+          console.log("Removing " + FriendUsername);
+          firebase
+            .database()
+            .ref("users/" + CurrentUsername + "/friends/")
+            .push({
+              username: FriendUsername,
+            });
+          firebase
+            .database()
+            .ref("users/" + FriendUsername + "/friends/")
+            .push({
+              username: CurrentUsername,
+            });
+          firebase
+            .database()
+            .ref("users/" + CurrentUsername + "/friendRequests/")
+            .child(key)
+            .remove();
+        }
       });
   }
 }

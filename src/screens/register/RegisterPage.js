@@ -48,6 +48,10 @@ export class RegisterPage extends React.Component {
           />
           <Button
             label={"Add Friend"}
+            onPress={this.otherstate.handleAddFriend}
+          />
+          <Button
+            label={"Accept request"}
             onPress={this.otherstate.AcceptFriendRequest}
           />
         </View>
