@@ -1,16 +1,17 @@
 import React from "react";
-import { Text, StyleSheet, View, Dimensions, Image } from "react-native";
+import { Text, StyleSheet, View, ScrollView, Dimensions, Image } from "react-native";
 import { Button } from "../../common/Button";
 import { FormTextInput } from "../../common/FormTextInput";
 import { HomeStore } from "./state";
 import { UserStore } from "../../stores/UserStore";
 import { COLOURS } from "../../config/colors";
+import { ContactCard } from "./ContactCard";
 
 export class HomePage extends React.Component {
   state = new HomeStore();
   render() {
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container} contentContainerStyle={styles.containerContent}>
         <View style={styles.banner}>
           <Text style={styles.needAttention}>give me attention!</Text>
           <Image source={{
@@ -34,7 +35,45 @@ export class HomePage extends React.Component {
             />
           </View>
         </View>
-      </View>
+        <View style={styles.contacts}>
+          <ContactCard 
+            imageURL="https://placekitten.com/300/300"
+            name="Hello Kitty"
+            onPress={() => console.log('clicked!')}
+            style={styles.contact}
+          />
+          <ContactCard 
+            imageURL="https://placekitten.com/350/350"
+            name="Tom Cat"
+            onPress={() => console.log('clicked!')}
+            style={styles.contact}
+          />
+          <ContactCard 
+            imageURL="https://placekitten.com/400/400"
+            name="Hello Kitty"
+            onPress={() => console.log('clicked!')}
+            style={styles.contact}
+          />
+          <ContactCard 
+            imageURL="https://placekitten.com/450/450"
+            name="Tom Cat"
+            onPress={() => console.log('clicked!')}
+            style={styles.contact}
+          />
+          <ContactCard 
+            imageURL="https://placekitten.com/200/200"
+            name="Hello Kitty"
+            onPress={() => console.log('clicked!')}
+            style={styles.contact}
+          />
+          <ContactCard 
+            imageURL="https://placekitten.com/250/250"
+            name="Tom Cat"
+            onPress={() => console.log('clicked!')}
+            style={styles.contact}
+          />
+        </View>
+      </ScrollView>
     );
   }
 }
@@ -43,12 +82,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: "100%",
-    justifyContent: "flex-start",
-    alignItems: "center",
     backgroundColor: COLOURS.DODGER_BLUE
   },
+  containerContent: {
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
   banner: {
-    height: "47.5%",
+    height: Dimensions.get('window').height * 0.475,
     borderBottomLeftRadius: Dimensions.get('window').width,
     borderBottomRightRadius: Dimensions.get('window').width,
     backgroundColor: COLOURS.WHITE,
@@ -87,5 +128,11 @@ const styles = StyleSheet.create({
     width: "40%",
     marginHorizontal: 10,
     marginTop: 20
+  },
+  contacts: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    marginTop: 30
   }
 });
