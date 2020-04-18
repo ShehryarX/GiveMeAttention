@@ -1,4 +1,3 @@
-import { action } from "mobx";
 import * as firebase from "firebase";
 import { UserStore } from "../stores/UserStore";
 import { Logger } from "../logging/Logger";
@@ -12,6 +11,18 @@ class ProfileControllerImpl {
       .orderByChild("username")
       .equalTo(username)
       .once("value");
+
+    return snapshot.exists();
+  }
+
+  async doesUserExistAsFriend(friendUsername) {
+    const snapshot = await firebase
+      .database()
+      .ref("/")
+      .child(`users/${UserStore.username}/`)
+      .child("friends")
+      .orderByChild("username")
+      .equalTo(friendUsername);
 
     return snapshot.exists();
   }
@@ -34,7 +45,6 @@ class ProfileControllerImpl {
     }
   }
 
-  @action
   async sendFriendRequestToUsername(friendUsername) {
     await this.assertUsernameExists(friendUsername);
 
