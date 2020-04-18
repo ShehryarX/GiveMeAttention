@@ -1,0 +1,17 @@
+{
+  "name": "rn-mobile",
+  "displayName": "rn-mobile",
+  "expo": {
+    "name": "rn-mobile",
+    "slug": "rn-mobile",
+    "version": "1.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
